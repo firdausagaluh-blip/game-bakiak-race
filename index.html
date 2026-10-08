@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#2e7d32" />
+<title>🏃 BAKIAK RACE — Game Tradisional Indonesia</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   RESET & VARIABEL
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --green:      #43a047;
+  --green-dk:   #2e7d32;
+  --green-lt:   #66bb6a;
+  --yellow:     #ffca28;
+  --yellow-dk:  #f9a825;
+  --blue:       #29b6f6;
+  --blue-dk:    #0288d1;
+  --orange:     #ff9800;
+  --orange-dk:  #ef6c00;
+  --red:        #ef5350;
+  --red-dk:     #c62828;
+  --wood:       #a1662f;
+  --wood-dk:    #6d4218;
+  --wood-lt:    #d8a56a;
+  --cream:      #fff8e1;
+  --dark:       #2b2b3c;
+  --white:      #ffffff;
+}
+
+html, body {
+  height: 100%; overflow: hidden;
+  font-family: 'Baloo 2', 'Fredoka', system-ui, sans-serif;
+  background: #0f1729; color: var(--dark);
+  user-select: none; -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+body { position: relative; }
+
+/* ============================================================
+   BACKGROUND
+   ============================================================ */
+.bg-world { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.bg-sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #7ec8ff 0%, #b3e5fc 45%, #d9f0ff 70%, #eaffd6 100%);
+}
+.bg-sun {
+  position: absolute; top: 6%; right: 8%;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, #fff6a8 0%, #ffca28 55%, rgba(255,202,40,0) 75%);
+  animation: sunPulse 6s ease-in-out infinite;
+}
+@keyframes sunPulse { 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.07);} }
+
+.cloud { position: absolute; background: #fff; border-radius: 100px; opacity: .92; filter: blur(.3px); }
+.cloud::before, .cloud::after { content:""; position:absolute; background:#fff; border-radius:50%; }
+.cloud-1 { top: 14%; left: -140px; width: 140px; height: 42px; animation: cloudMove 48s linear infinite; }
+.cloud-1::before { width: 68px; height: 68px; top: -30px; left: 20px; }
+.cloud-1::after  { width: 52px; height: 52px; top: -20px; right: 18px; }
+.cloud-2 { top: 22%; left: -240px; width: 180px; height: 52px; animation: cloudMove 68s linear infinite; animation-delay:-20s; }
+.cloud-2::before { width: 88px; height: 88px; top: -42px; left: 24px; }
+.cloud-2::after  { width: 64px; height: 64px; top: -26px; right: 22px; }
+.cloud-3 { top: 8%; left: -200px; width: 110px; height: 36px; animation: cloudMove 56s linear infinite; animation-delay:-34s; }
+.cloud-3::before { width: 56px; height: 56px; top: -26px; left: 14px; }
+.cloud-3::after  { width: 42px; height: 42px; top: -16px; right: 14px; }
+@keyframes cloudMove { from{ transform:translateX(0);} to{ transform:translateX(140vw);} }
+
+.bg-hills {
+  position: absolute; left:-5%; right:-5%; bottom: 22%; height: 180px;
+  background:
+    radial-gradient(ellipse at 20% 100%, #8fdc6f 0%, #8fdc6f 42%, transparent 43%),
+    radial-gradient(ellipse at 55% 100%, #74c957 0%, #74c957 42%, transparent 43%),
+    radial-gradient(ellipse at 85% 100%, #8fdc6f 0%, #8fdc6f 40%, transparent 41%);
+  background-size: 60% 100%, 55% 100%, 55% 100%;
+  background-repeat: no-repeat;
+  background-position: 0 100%, 30% 100%, 70% 100%;
+  opacity: .85;
+}
+.bg-tree { position: absolute; bottom: 20%; }
+.tree-trunk {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 14px; height: 60px;
+  background: linear-gradient(90deg,var(--wood-lt),var(--wood),var(--wood-dk));
+  border-radius: 6px;
+}
+.tree-top {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  width: 90px; height: 90px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #8fe36a, #2e7d32);
+  box-shadow: -26px 12px 0 -10px #4caf50, 26px 12px 0 -10px #4caf50;
+}
+.tree-1 { left: 4%; transform: scale(.85); }
+.tree-2 { right: 6%; transform: scale(1.05); }
+.tree-3 { left: 30%; transform: scale(.7); opacity:.85; }
+
+.bg-ground {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 24%;
+  background: linear-gradient(180deg, #9be07a 0%, #4caf50 45%, #2e7d32 100%);
+}
+.bg-ground::before {
+  content:""; position:absolute; top:-6px; left:0; right:0; height:14px;
+  background: repeating-linear-gradient(90deg, #74c957 0 22px, #63b845 22px 44px);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* ============================================================
+   APP
+   ============================================================ */
+#app {
+  position: relative; z-index: 2;
+  width: 100%; height: 100vh; height: 100dvh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px; overflow: hidden;
+}
+.screen {
+  display: none; width: 100%; height: 100%;
+  align-items: center; justify-content: center; flex-direction: column;
+}
+.screen.is-active { display: flex; animation: screenIn .45s ease both; }
+@keyframes screenIn { from{ opacity:0; transform:scale(.96);} to{ opacity:1; transform:scale(1);} }
+
+/* ============================================================
+   MENU CARD
+   ============================================================ */
+.menu-card {
+  width: min(560px, 96vw); max-height: 96vh; overflow-y: auto;
+  background: linear-gradient(165deg, #fff8e1 0%, #ffe9b8 55%, #ffd88a 100%);
+  border-radius: 32px; padding: 22px 22px 18px;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.35),
+    inset 0 0 0 5px #fff,
+    inset 0 0 0 10px #ffca28;
+  border: 3px solid #43a047; position: relative;
+  scrollbar-width: thin;
+}
+.menu-card::-webkit-scrollbar { width: 6px; }
+.menu-card::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+.menu-card::before, .menu-card::after { content:""; position:absolute; font-size:26px; }
+.menu-card::before { content: "🌿"; top: 8px; left: 12px; transform: rotate(-15deg); }
+.menu-card::after  { content: "🌳"; top: 8px; right: 12px; transform: rotate(15deg); }
+
+.menu-header { text-align: center; margin-bottom: 8px; }
+.game-title {
+  font-family: 'Fredoka','Baloo 2',sans-serif; font-weight: 700;
+  font-size: clamp(24px, 6.6vw, 42px); line-height: 1.05;
+  color: var(--green-dk);
+  text-shadow: 2px 2px 0 #fff, 4px 4px 0 var(--yellow), 6px 6px 0 rgba(0,0,0,.16);
+  letter-spacing: .5px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; flex-wrap: wrap;
+}
+.title-emoji { font-size: .8em; filter: drop-shadow(0 3px 4px rgba(0,0,0,.25)); }
+.title-text { white-space: nowrap; }
+.game-subtitle {
+  font-family: 'Baloo 2', cursive; font-weight: 700;
+  color: var(--orange-dk); font-size: clamp(13px, 3.4vw, 17px);
+  margin-top: 4px; letter-spacing: .3px;
+}
+.game-desc {
+  margin-top: 8px; font-size: clamp(12px, 3.1vw, 14px);
+  font-weight: 600; color: #5a4632; line-height: 1.5; padding: 0 6px;
+}
+
+.hero-wrap {
+  position: relative; margin: 10px 0 12px; border-radius: 22px; overflow: hidden;
+  box-shadow: inset 0 0 0 4px #fff, 0 8px 20px rgba(0,0,0,.18);
+  background: #bfe9ff;
+}
+.hero-svg { display: block; width: 100%; height: auto; }
+
+.hero-badge {
+  position: absolute; font-family: 'Fredoka', sans-serif; font-weight: 700;
+  color: #fff; padding: 4px 12px; border-radius: 99px; font-size: 13px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.28); pointer-events: none;
+}
+.badge-kompak {
+  top: 12%; right: 6%;
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  animation: badgeFloat 2.2s ease-in-out infinite;
+}
+.badge-coin {
+  bottom: 22%; left: 6%;
+  background: linear-gradient(135deg, #ffca28, #f9a825); color: #6d4218;
+  animation: badgeFloat 2.6s ease-in-out infinite .6s;
+}
+@keyframes badgeFloat {
+  0%,100% { transform: translateY(0) rotate(-4deg); }
+  50%     { transform: translateY(-8px) rotate(4deg); }
+}
+
+.menu-buttons { display: flex; flex-direction: column; gap: 10px; }
+
+.btn {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  gap: 10px; border: none; border-radius: 18px; padding: 14px 18px;
+  font-family: 'Fredoka','Baloo 2',sans-serif; font-weight: 700;
+  font-size: clamp(15px, 3.8vw, 18px); cursor: pointer; color: #fff;
+  letter-spacing: .5px;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  box-shadow: 0 6px 0 rgba(0,0,0,.22), 0 10px 20px rgba(0,0,0,.22);
+  text-shadow: 0 2px 3px rgba(0,0,0,.22); overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn::after {
+  content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.5), transparent);
+  transform: skewX(-22deg); transition: left .55s ease;
+}
+.btn:hover::after { left: 130%; }
+.btn:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.06); }
+.btn:active { transform: translateY(3px) scale(.98); box-shadow: 0 3px 0 rgba(0,0,0,.22); }
+.btn-icon { font-size: 1.15em; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+.btn-text { flex-shrink: 0; }
+
+.btn-primary   { background: linear-gradient(135deg, #66bb6a 0%, #2e7d32 100%); }
+.btn-secondary { background: linear-gradient(135deg, #4fc3f7 0%, #0288d1 100%); }
+.btn-music     { background: linear-gradient(135deg, #ffb74d 0%, #ef6c00 100%); }
+.btn-ghost     { background: linear-gradient(135deg, #9575cd 0%, #5e35b1 100%); }
+.btn-danger    { background: linear-gradient(135deg, #ef5350 0%, #c62828 100%); }
+.btn-full      { width: 100%; }
+.btn-big       { padding: 18px 20px; font-size: clamp(17px, 4.4vw, 21px); }
+
+.highscore-card {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #2b2b3c, #4a4a63);
+  border-radius: 18px; padding: 10px 16px; text-align: center;
+  box-shadow: inset 0 0 0 3px #ffca28, 0 6px 16px rgba(0,0,0,.25);
+  position: relative; overflow: hidden;
+}
+.highscore-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 3px;
+  color: var(--yellow); text-transform: uppercase;
+}
+.highscore-value {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: clamp(26px, 7vw, 36px); color: #fff; line-height: 1.1;
+  text-shadow: 0 3px 0 #1565c0, 0 5px 12px rgba(0,0,0,.4);
+}
+.menu-footer {
+  text-align: center; margin-top: 12px;
+  font-size: 11px; font-weight: 600; color: #6d4218;
+  opacity: .85; letter-spacing: .5px;
+}
+
+/* ============================================================
+   GAME SCREEN
+   ============================================================ */
+.screen-game {
+  width: 100%; height: 100%; justify-content: flex-start;
+  padding: 0; gap: 8px;
+}
+.hud {
+  width: min(960px, 100%);
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 8px 10px 0;
+}
+.hud-row-top {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: stretch; justify-content: center;
+}
+.hud-item {
+  display: flex; align-items: center; gap: 6px;
+  background: linear-gradient(180deg, #fff, #ffe9b8);
+  border-radius: 14px; padding: 6px 12px;
+  box-shadow: 0 4px 0 #c9a26b, 0 6px 14px rgba(0,0,0,.22);
+  border: 2px solid #fff; min-width: 88px; justify-content: center;
+}
+.hud-icon { font-size: 18px; }
+.hud-label {
+  font-size: 10px; font-weight: 800; color: #6d4218;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.hud-value {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: 18px; color: var(--green-dk);
+  min-width: 20px; text-align: center;
+}
+.hud-time .hud-value { color: var(--blue-dk); }
+.hud-time.is-low .hud-value { color: #c62828; animation: blink .6s steps(2) infinite; }
+@keyframes blink { 50% { opacity: .35; } }
+
+.btn-pause {
+  background: linear-gradient(135deg, #9575cd, #5e35b1);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 8px 14px; font-family: 'Fredoka', sans-serif;
+  font-weight: 700; font-size: 13px; cursor: pointer;
+  box-shadow: 0 4px 0 #3b2a85, 0 6px 14px rgba(0,0,0,.22);
+  transition: transform .12s, box-shadow .12s;
+}
+.btn-pause:active { transform: translateY(3px); box-shadow: 0 1px 0 #3b2a85; }
+
+.balance-box {
+  width: min(960px, 100%);
+  background: linear-gradient(180deg, #fffdf5, #ffe9b8);
+  border-radius: 16px; padding: 8px 12px 10px;
+  box-shadow: 0 4px 0 #c9a26b, 0 6px 14px rgba(0,0,0,.22);
+  border: 2px solid #fff;
+}
+.balance-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 5px;
+}
+.balance-title {
+  font-weight: 800; font-size: 12px; color: #6d4218; letter-spacing: 1.2px;
+}
+.balance-text {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700; font-size: 15px; color: var(--green-dk);
+}
+.balance-text.is-low { color: #c62828; }
+.balance-track {
+  position: relative; height: 18px; border-radius: 12px; background: #e0d5c2;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.25); overflow: hidden;
+}
+.balance-fill {
+  height: 100%; width: 100%;
+  background: linear-gradient(90deg, #c62828 0%, #ffca28 35%, #66bb6a 60%, #2e7d32 100%);
+  border-radius: 12px;
+  transition: width .18s ease-out, filter .2s;
+  box-shadow: 0 0 12px rgba(255,202,40,.6);
+}
+.balance-fill.is-low { filter: brightness(.7) saturate(1.6); }
+.balance-ticks {
+  position: absolute; inset: 0;
+  display: flex; justify-content: space-evenly; align-items: center;
+  pointer-events: none;
+}
+.balance-ticks span { width: 2px; height: 70%; background: rgba(0,0,0,.18); border-radius: 2px; }
+
+.arena-wrap {
+  position: relative; width: min(960px, 100%);
+  flex: 1 1 auto; min-height: 0;
+  border-radius: 20px; overflow: hidden;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    inset 0 0 0 5px #fff,
+    inset 0 0 0 9px #ffca28;
+  background: #bfe9ff; margin: 0 auto;
+  transition: transform .08s;
+}
+.arena-wrap.shake { animation: screenShake .4s ease; }
+@keyframes screenShake {
+  0%,100% { transform: translate(0,0); }
+  15% { transform: translate(-8px, 4px) rotate(-.6deg); }
+  30% { transform: translate(7px, -3px) rotate(.6deg); }
+  45% { transform: translate(-6px, 3px); }
+  60% { transform: translate(5px, -2px); }
+  75% { transform: translate(-3px, 2px); }
+}
+#game-canvas { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.fx-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.float-text {
+  position: absolute; font-family: 'Fredoka', sans-serif;
+  font-weight: 700; font-size: 22px; color: #fff;
+  text-shadow: 0 2px 0 #000, 0 0 12px rgba(0,0,0,.5);
+  pointer-events: none; animation: floatUp 1s ease-out forwards;
+  white-space: nowrap;
+}
+.float-text.good { color: #ffca28; text-shadow: 0 2px 0 #b8860b, 0 0 14px #ffca28; }
+.float-text.bad  { color: #ff5252; text-shadow: 0 2px 0 #7a0000, 0 0 14px #ff5252; }
+.float-text.coin { color: #ffca28; }
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(.6); }
+  20%  { opacity: 1; transform: translate(-50%, -14px) scale(1.15); }
+  100% { opacity: 0; transform: translate(-50%, -70px) scale(1); }
+}
+.flash-layer {
+  position: absolute; inset: 0; background: #ff2b2b; opacity: 0;
+  pointer-events: none; transition: opacity .12s;
+}
+.flash-layer.on { opacity: .35; }
+
+.level-intro {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(20,20,40,.55); backdrop-filter: blur(3px);
+  opacity: 0; pointer-events: none; transition: opacity .35s; z-index: 5;
+}
+.level-intro.show { opacity: 1; }
+.level-intro-inner {
+  text-align: center;
+  background: linear-gradient(160deg, #fff8e1, #ffd88a);
+  padding: 22px 26px; border-radius: 22px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.4), inset 0 0 0 4px #ffca28, inset 0 0 0 7px #43a047;
+  transform: scale(.9); transition: transform .35s; max-width: 90%;
+}
+.level-intro.show .level-intro-inner { transform: scale(1); }
+.level-intro-title {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: clamp(18px, 4.5vw, 26px); color: var(--green-dk);
+  margin-bottom: 6px; text-shadow: 0 2px 0 #fff, 0 4px 8px rgba(0,0,0,.15);
+}
+.level-intro-desc {
+  font-size: clamp(13px, 3.3vw, 16px); font-weight: 600;
+  color: #4a3a2a; font-style: italic;
+}
+.countdown {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: clamp(80px, 22vw, 180px); color: #fff;
+  text-shadow: 0 0 24px #43a047, 0 6px 0 #2e7d32, 0 10px 30px rgba(0,0,0,.5);
+  opacity: 0; pointer-events: none; z-index: 6; transition: opacity .2s;
+}
+.countdown.show { opacity: 1; animation: cdPop .8s ease; }
+@keyframes cdPop {
+  0% { transform: scale(.4); opacity: 0; }
+  35% { transform: scale(1.15); opacity: 1; }
+  70% { transform: scale(1); }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+.controls {
+  width: min(960px, 100%);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 4px 10px 14px;
+}
+.ctrl-btn {
+  flex: 1 1 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 16px 10px; border: none; border-radius: 20px;
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  color: #fff; cursor: pointer;
+  box-shadow: 0 6px 0 rgba(0,0,0,.28), 0 10px 20px rgba(0,0,0,.25);
+  transition: transform .08s, box-shadow .08s, filter .08s;
+  user-select: none; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ctrl-btn:active, .ctrl-btn.pressed {
+  transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.28); filter: brightness(.92);
+}
+.ctrl-left  { background: linear-gradient(160deg, #ffb74d 0%, #ef6c00 100%); }
+.ctrl-right { background: linear-gradient(160deg, #4fc3f7 0%, #0277bd 100%); }
+.ctrl-arrow { font-size: 26px; line-height: 1; }
+.ctrl-label { font-size: 13px; letter-spacing: 2px; }
+
+.controls-hint {
+  display: flex; align-items: center; gap: 4px;
+  color: #fff; font-family: 'Fredoka', sans-serif;
+  font-weight: 700; font-size: 12px;
+  text-shadow: 0 2px 4px rgba(0,0,0,.5);
+  flex-shrink: 0;
+}
+.hint-key {
+  background: rgba(255,255,255,.25);
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 6px; padding: 2px 7px; font-size: 11px;
+}
+.hint-sep { opacity: .6; }
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(15,15,30,.72); backdrop-filter: blur(5px);
+  z-index: 50; padding: 14px; overflow-y: auto;
+}
+.modal-overlay.show { display: flex; animation: fadeIn .25s ease both; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+.modal-card {
+  width: min(520px, 96vw); max-height: 94vh; overflow-y: auto;
+  background: linear-gradient(165deg, #fff8e1 0%, #ffe9b8 100%);
+  border-radius: 24px; padding: 0;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5),
+    inset 0 0 0 5px #fff,
+    inset 0 0 0 9px #43a047;
+  animation: modalIn .35s cubic-bezier(.34,1.56,.64,1) both;
+  position: relative; z-index: 2;
+  scrollbar-width: thin;
+}
+.modal-card::-webkit-scrollbar { width: 6px; }
+.modal-card::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.82) translateY(30px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-small { width: min(400px, 92vw); }
+
+.modal-head {
+  padding: 20px 20px 12px; text-align: center;
+  border-bottom: 3px dashed rgba(67,160,71,.28);
+}
+.modal-head-celebrate { background: linear-gradient(135deg, #ffca28, #ff9800); border-radius: 20px 20px 0 0; }
+.modal-head-win {
+  background: linear-gradient(135deg, #ffca28 0%, #ff9800 60%, #43a047 100%);
+  border-radius: 20px 20px 0 0; color: #fff; border-bottom: none; padding-bottom: 18px;
+}
+.modal-head-gameover {
+  background: linear-gradient(135deg, #4a4a63, #2b2b3c);
+  border-radius: 20px 20px 0 0;
+}
+.modal-head-gameover .modal-title { color: #ff6b6b; text-shadow: 0 3px 0 #7a0000; }
+
+.modal-title {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: clamp(19px, 5vw, 25px); color: var(--green-dk);
+  text-shadow: 0 2px 0 #fff, 0 4px 8px rgba(0,0,0,.15); letter-spacing: .5px;
+}
+.modal-head-celebrate .modal-title { color: #6d4218; text-shadow: 0 2px 0 #fff; }
+
+.modal-body { padding: 16px 20px; }
+
+.modal-lead {
+  font-size: 15px; font-weight: 600; line-height: 1.5;
+  color: #3a2a1a; margin-bottom: 14px;
+}
+.modal-lead.center { text-align: center; }
+
+.modal-subtitle {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: 15px; color: var(--blue-dk); margin: 12px 0 6px; letter-spacing: .5px;
+}
+
+.rule-list { padding-left: 22px; display: flex; flex-direction: column; gap: 5px; }
+.rule-list li { font-size: 14px; font-weight: 600; color: #3a2a1a; line-height: 1.45; }
+.rule-list li::marker { color: var(--green); font-weight: 800; }
+
+.key-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.key-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 36px; padding: 5px 12px;
+  background: linear-gradient(180deg, #fff, #e0e0e0);
+  border-radius: 8px;
+  font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 14px;
+  color: #2b2b3c;
+  box-shadow: 0 3px 0 #a0a0a0, 0 4px 8px rgba(0,0,0,.15);
+  border: 1px solid #fff;
+}
+.key-chip.big { font-size: 18px; padding: 6px 16px; }
+.key-eq { font-weight: 800; color: #6d4218; }
+.key-desc { font-size: 14px; font-weight: 600; color: #3a2a1a; }
+
+.tip-box {
+  margin-top: 14px; padding: 12px 14px;
+  background: linear-gradient(135deg, #fff3bf, #ffd88a);
+  border-radius: 14px; border-left: 6px solid #f9a825;
+  font-size: 13px; font-weight: 600; color: #5a3a00;
+  line-height: 1.5;
+  box-shadow: 0 4px 10px rgba(249,168,37,.25);
+}
+
+.modal-foot { padding: 12px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
+.modal-foot-row { flex-direction: row; }
+.modal-foot-row .btn { flex: 1; }
+.modal-foot-column .btn { width: 100%; }
+
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 4px;
+  border-bottom: 2px dashed rgba(67,160,71,.2);
+}
+.setting-row:last-of-type { border-bottom: none; }
+.setting-info { display: flex; align-items: center; gap: 10px; }
+.setting-icon { font-size: 22px; }
+.setting-name { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 16px; color: #2b2b3c; }
+
+.toggle-btn {
+  position: relative; width: 82px; height: 38px;
+  border: none; border-radius: 99px;
+  background: linear-gradient(180deg, #b0b0b0, #888);
+  cursor: pointer;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,.3);
+  transition: background .25s; padding: 0;
+}
+.toggle-btn.is-on { background: linear-gradient(180deg, #66bb6a, #2e7d32); }
+.toggle-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 32px; height: 32px; background: #fff; border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,.35);
+  transition: left .25s cubic-bezier(.34,1.56,.64,1);
+}
+.toggle-btn.is-on .toggle-knob { left: 47px; }
+.toggle-text {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 12px;
+  color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5);
+  right: 12px;
+}
+.toggle-btn.is-on .toggle-text { right: auto; left: 12px; }
+
+.setting-row-slider { flex-direction: column; align-items: stretch; gap: 8px; }
+.volume-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 10px; border-radius: 5px;
+  background: linear-gradient(90deg, #ef5350, #ffca28, #43a047);
+  outline: none;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.2);
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--green);
+  cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,.35);
+}
+.volume-slider::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--green); cursor: pointer;
+}
+.setting-divider { height: 2px; background: rgba(67,160,71,.2); margin: 12px 0; }
+
+.result-grid {
+  display: flex; flex-direction: column; gap: 6px;
+  background: rgba(255,255,255,.55);
+  padding: 12px 14px; border-radius: 14px;
+  border: 2px dashed rgba(67,160,71,.3);
+}
+.result-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 15px; font-weight: 700; color: #3a2a1a; padding: 4px 0;
+}
+.result-label { opacity: .9; }
+.result-value {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  color: var(--green-dk); font-size: 17px;
+}
+.result-row-total {
+  border-top: 2px solid rgba(67,160,71,.35);
+  padding-top: 8px; margin-top: 4px;
+}
+.result-row-total .result-label { color: var(--blue-dk); font-size: 16px; }
+.result-row-total .result-value { color: var(--blue-dk); font-size: 22px; }
+
+.modal-win { overflow: visible; }
+.win-trophies {
+  font-size: 44px; line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.35));
+  animation: trophyBounce 1.4s ease-in-out infinite;
+  margin-bottom: 4px;
+}
+@keyframes trophyBounce {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.06); }
+}
+.win-title {
+  color: #fff;
+  text-shadow: 0 3px 0 #2e7d32, 0 5px 16px rgba(0,0,0,.4);
+  font-size: clamp(28px, 8vw, 40px);
+}
+.win-subtitle {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  color: #fff; font-size: clamp(13px, 3.6vw, 17px);
+  letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,.4);
+}
+.new-highscore {
+  display: none; text-align: center;
+  background: linear-gradient(135deg, #ffca28, #ff9800);
+  color: #6d4218;
+  font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 16px;
+  padding: 8px 12px; border-radius: 12px; margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(255,152,0,.5);
+  animation: newHS 1s ease-in-out infinite;
+}
+.new-highscore.show { display: block; }
+@keyframes newHS {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+#confetti-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+}
+.pause-stats { display: flex; gap: 8px; justify-content: center; margin-top: 6px; }
+.pause-stat {
+  flex: 1;
+  background: linear-gradient(180deg, #fff, #ffe9b8);
+  border-radius: 14px; padding: 10px 8px; text-align: center;
+  box-shadow: 0 4px 0 #c9a26b, 0 6px 12px rgba(0,0,0,.18);
+  border: 2px solid #fff;
+}
+.pause-stat-label { display: block; font-size: 11px; font-weight: 700; color: #6d4218; margin-bottom: 3px; }
+.pause-stat-value {
+  font-family: 'Fredoka', sans-serif; font-weight: 700;
+  font-size: 20px; color: var(--green-dk);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 720px) {
+  .hud-item { min-width: 68px; padding: 5px 8px; gap: 4px; }
+  .hud-icon { font-size: 15px; }
+  .hud-label { font-size: 8px; }
+  .hud-value { font-size: 15px; }
+  .btn-pause { padding: 7px 10px; font-size: 11px; }
+  .controls-hint { display: none; }
+  .ctrl-btn { padding: 18px 8px; }
+  .ctrl-arrow { font-size: 30px; }
+  .ctrl-label { font-size: 12px; }
+  .menu-card { padding: 16px 14px 14px; border-radius: 26px; }
+}
+@media (max-width: 420px) {
+  .hud-item { min-width: 58px; padding: 4px 6px; }
+  .hud-value { font-size: 14px; }
+  .balance-title { font-size: 10px; }
+  .balance-text { font-size: 13px; }
+  .ctrl-label { font-size: 11px; letter-spacing: 1px; }
+}
+@media (min-width: 1000px) {
+  .hud, .balance-box, .arena-wrap, .controls { width: min(960px, 92vw); }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .arena-wrap { min-height: 180px; }
+  .controls { padding-bottom: 6px; }
+  .ctrl-btn { padding: 10px 6px; }
+  .ctrl-arrow { font-size: 22px; }
+  .menu-card { max-height: 98vh; padding: 12px 18px; }
+  .hero-wrap { max-height: 130px; }
+  .hero-svg { max-height: 130px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     BACKGROUND
+     ============================================================ -->
+<div class="bg-world" aria-hidden="true">
+  <div class="bg-sky"></div>
+  <div class="bg-sun"></div>
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="bg-hills"></div>
+  <div class="bg-tree tree-1"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="bg-tree tree-2"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="bg-tree tree-3"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="bg-ground"></div>
+</div>
+
+<div id="app">
+
+  <!-- MENU UTAMA -->
+  <section id="screen-menu" class="screen is-active">
+    <div class="menu-card">
+      <header class="menu-header">
+        <h1 class="game-title">
+          <span class="title-emoji">🏃</span>
+          <span class="title-text">BAKIAK RACE</span>
+          <span class="title-emoji">🏃</span>
+        </h1>
+        <p class="game-subtitle">"Game Tradisional Indonesia"</p>
+        <p class="game-desc">
+          Uji kekompakan dan kerja sama tim! Atur langkah bersama, hindari
+          rintangan, kumpulkan koin, dan capai <b>FINISH</b>.
+        </p>
+      </header>
+
+      <div class="hero-wrap">
+        <svg class="hero-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9fe0ff"/><stop offset="100%" stop-color="#e3f6ff"/>
+            </linearGradient>
+            <linearGradient id="grassG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9be07a"/><stop offset="100%" stop-color="#3f9e3f"/>
+            </linearGradient>
+            <linearGradient id="woodG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d8a56a"/><stop offset="100%" stop-color="#8a5520"/>
+            </linearGradient>
+            <linearGradient id="shirtA" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#66bb6a"/><stop offset="100%" stop-color="#2e7d32"/>
+            </linearGradient>
+            <linearGradient id="shirtB" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#e8e8e8"/>
+            </linearGradient>
+            <linearGradient id="shirtC" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffca28"/><stop offset="100%" stop-color="#f9a825"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="560" height="232" fill="url(#skyG)"/>
+          <circle cx="478" cy="58" r="34" fill="#ffca28"/>
+          <circle cx="478" cy="58" r="46" fill="#ffca28" opacity="0.25"/>
+          <g fill="#fff" opacity="0.95">
+            <ellipse cx="96" cy="66" rx="38" ry="21"/>
+            <ellipse cx="128" cy="56" rx="27" ry="17"/>
+            <ellipse cx="66" cy="58" rx="22" ry="14"/>
+            <ellipse cx="336" cy="46" rx="31" ry="18"/>
+            <ellipse cx="366" cy="38" rx="22" ry="14"/>
+          </g>
+          <g>
+            <rect x="46" y="168" width="14" height="64" rx="6" fill="#8b5a2b"/>
+            <circle cx="53" cy="160" r="34" fill="#4caf50"/>
+            <circle cx="28" cy="176" r="22" fill="#3f9e3f"/>
+            <circle cx="78" cy="176" r="22" fill="#3f9e3f"/>
+          </g>
+          <g>
+            <rect x="500" y="176" width="13" height="56" rx="6" fill="#8b5a2b"/>
+            <circle cx="506" cy="168" r="30" fill="#4caf50"/>
+            <circle cx="484" cy="182" r="19" fill="#3f9e3f"/>
+            <circle cx="528" cy="182" r="19" fill="#3f9e3f"/>
+          </g>
+          <rect x="0" y="232" width="560" height="88" fill="url(#grassG)"/>
+          <rect x="0" y="232" width="560" height="10" fill="#6ecb52"/>
+          <g>
+            <rect x="86" y="196" width="5" height="82" rx="2.5" fill="#b0b0b0"/>
+            <path d="M91 198 L146 210 L91 224 Z" fill="#43a047"/>
+          </g>
+          <rect x="118" y="252" width="326" height="19" rx="9.5" fill="url(#woodG)"/>
+          <rect x="118" y="252" width="326" height="6" rx="3" fill="#e8bb8a" opacity="0.65"/>
+          <rect x="132" y="266" width="298" height="5" rx="2.5" fill="#5a3210" opacity="0.55"/>
+          <rect x="160" y="240" width="10" height="16" rx="4" fill="#5a3210"/>
+          <rect x="265" y="240" width="10" height="16" rx="4" fill="#5a3210"/>
+          <rect x="370" y="240" width="10" height="16" rx="4" fill="#5a3210"/>
+          <g transform="translate(175,0)">
+            <rect x="-17" y="200" width="13" height="50" rx="6.5" fill="#3d5a80"/>
+            <rect x="4" y="200" width="13" height="50" rx="6.5" fill="#3d5a80"/>
+            <rect x="-21" y="244" width="20" height="12" rx="6" fill="#2b2b2b"/>
+            <rect x="1" y="244" width="20" height="12" rx="6" fill="#2b2b2b"/>
+            <rect x="-23" y="150" width="46" height="58" rx="15" fill="url(#shirtA)"/>
+            <rect x="-23" y="186" width="46" height="9" fill="#fff" opacity="0.9"/>
+            <line x1="-20" y1="162" x2="-35" y2="196" stroke="#ffd9b3" stroke-width="12" stroke-linecap="round"/>
+            <line x1="20" y1="162" x2="35" y2="196" stroke="#ffd9b3" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="0" cy="124" r="26" fill="#ffd9b3"/>
+            <path d="M-26 124 A26 26 0 0 1 26 124 Z" fill="#33251c"/>
+            <rect x="-27" y="115" width="54" height="7" rx="3.5" fill="#43a047"/>
+            <circle cx="-9" cy="130" r="3.6" fill="#222"/>
+            <circle cx="9" cy="130" r="3.6" fill="#222"/>
+            <path d="M-8 139 q8 9 16 0" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(280,0)">
+            <rect x="-17" y="200" width="13" height="50" rx="6.5" fill="#5f6f94"/>
+            <rect x="4" y="200" width="13" height="50" rx="6.5" fill="#5f6f94"/>
+            <rect x="-21" y="244" width="20" height="12" rx="6" fill="#1f1f1f"/>
+            <rect x="1" y="244" width="20" height="12" rx="6" fill="#1f1f1f"/>
+            <rect x="-23" y="150" width="46" height="58" rx="15" fill="url(#shirtB)"/>
+            <rect x="-23" y="150" width="46" height="9" fill="#43a047"/>
+            <line x1="-20" y1="162" x2="-35" y2="196" stroke="#ffd9b3" stroke-width="12" stroke-linecap="round"/>
+            <line x1="20" y1="162" x2="35" y2="196" stroke="#ffd9b3" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="0" cy="124" r="26" fill="#ffd9b3"/>
+            <path d="M-26 124 A26 26 0 0 1 26 124 Z" fill="#1e1e1e"/>
+            <rect x="-27" y="115" width="54" height="7" rx="3.5" fill="#ffca28"/>
+            <circle cx="-9" cy="130" r="3.6" fill="#222"/>
+            <circle cx="9" cy="130" r="3.6" fill="#222"/>
+            <path d="M-8 139 q8 9 16 0" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(385,0)">
+            <rect x="-17" y="200" width="13" height="50" rx="6.5" fill="#6b4f8a"/>
+            <rect x="4" y="200" width="13" height="50" rx="6.5" fill="#6b4f8a"/>
+            <rect x="-21" y="244" width="20" height="12" rx="6" fill="#333"/>
+            <rect x="1" y="244" width="20" height="12" rx="6" fill="#333"/>
+            <rect x="-23" y="150" width="46" height="58" rx="15" fill="url(#shirtC)"/>
+            <rect x="-23" y="186" width="46" height="9" fill="#43a047" opacity="0.9"/>
+            <line x1="-20" y1="162" x2="-35" y2="196" stroke="#ffd9b3" stroke-width="12" stroke-linecap="round"/>
+            <line x1="20" y1="162" x2="35" y2="196" stroke="#ffd9b3" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="0" cy="124" r="26" fill="#ffd9b3"/>
+            <path d="M-26 124 A26 26 0 0 1 26 124 Z" fill="#4a2f1c"/>
+            <rect x="-27" y="115" width="54" height="7" rx="3.5" fill="#43a047"/>
+            <circle cx="-9" cy="130" r="3.6" fill="#222"/>
+            <circle cx="9" cy="130" r="3.6" fill="#222"/>
+            <path d="M-8 139 q8 9 16 0" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+          <ellipse cx="120" cy="272" rx="26" ry="8" fill="#fff" opacity="0.45"/>
+          <ellipse cx="446" cy="272" rx="20" ry="7" fill="#fff" opacity="0.35"/>
+        </svg>
+        <div class="hero-badge badge-kompak">KOMPAK!</div>
+        <div class="hero-badge badge-coin">🪙 +10</div>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="btn-start" class="btn btn-primary btn-big" type="button">
+          <span class="btn-icon">▶</span><span class="btn-text">MULAI BERMAIN</span>
+        </button>
+        <button id="btn-howto" class="btn btn-secondary" type="button">
+          <span class="btn-icon">📖</span><span class="btn-text">CARA BERMAIN</span>
+        </button>
+        <button id="btn-music" class="btn btn-music" type="button">
+          <span class="btn-icon" id="menu-music-icon">🔊</span>
+          <span class="btn-text" id="menu-music-text">MUSIK ON</span>
+        </button>
+        <button id="btn-settings" class="btn btn-ghost" type="button">
+          <span class="btn-icon">⚙️</span><span class="btn-text">PENGATURAN</span>
+        </button>
+      </div>
+
+      <div class="highscore-card">
+        <div class="highscore-label">🏆 SKOR TERTINGGI</div>
+        <div class="highscore-value" id="highscore-value">0</div>
+      </div>
+
+      <p class="menu-footer">🌿 Permainan Tradisional Bakiak • Edisi Digital</p>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="screen-game" class="screen screen-game">
+    <div class="hud">
+      <div class="hud-row-top">
+        <div class="hud-item">
+          <span class="hud-icon">❤️</span>
+          <span class="hud-label">NYAWA</span>
+          <span class="hud-value" id="hud-lives">3</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-icon">⭐</span>
+          <span class="hud-label">SKOR</span>
+          <span class="hud-value" id="hud-score">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-icon">🪙</span>
+          <span class="hud-label">KOIN</span>
+          <span class="hud-value" id="hud-coins">0</span>
+        </div>
+        <div class="hud-item hud-time" id="hud-time-box">
+          <span class="hud-icon">⏱️</span>
+          <span class="hud-label">WAKTU</span>
+          <span class="hud-value" id="hud-time">60</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-icon">🏁</span>
+          <span class="hud-label">LEVEL</span>
+          <span class="hud-value" id="hud-level">1</span>
+        </div>
+        <button id="btn-pause" class="btn-pause" type="button">⏸ PAUSE</button>
+      </div>
+
+      <div class="balance-box">
+        <div class="balance-head">
+          <span class="balance-title">🤝 KEKOMPAKAN</span>
+          <span class="balance-text" id="balance-text">100%</span>
+        </div>
+        <div class="balance-track">
+          <div class="balance-fill" id="balance-fill"></div>
+          <div class="balance-ticks"><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arena-wrap" id="arena-wrap">
+      <canvas id="game-canvas" width="960" height="420"></canvas>
+      <div class="fx-layer" id="fx-layer"></div>
+      <div class="level-intro" id="level-intro">
+        <div class="level-intro-inner">
+          <div class="level-intro-title" id="level-intro-title">🌱 LEVEL 1</div>
+          <div class="level-intro-desc" id="level-intro-desc">Pemanasan dulu!</div>
+        </div>
+      </div>
+      <div class="countdown" id="countdown"></div>
+      <div class="flash-layer" id="flash-layer"></div>
+    </div>
+
+    <div class="controls">
+      <button id="btn-left" class="ctrl-btn ctrl-left" type="button">
+        <span class="ctrl-arrow">◀</span>
+        <span class="ctrl-label">KIRI</span>
+      </button>
+      <div class="controls-hint">
+        <span class="hint-key">A</span><span class="hint-key">←</span>
+        <span class="hint-sep">/</span>
+        <span class="hint-key">D</span><span class="hint-key">→</span>
+      </div>
+      <button id="btn-right" class="ctrl-btn ctrl-right" type="button">
+        <span class="ctrl-arrow">▶</span>
+        <span class="ctrl-label">KANAN</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- MODAL CARA BERMAIN -->
+  <div class="modal-overlay" id="modal-howto">
+    <div class="modal-card">
+      <div class="modal-head"><h2 class="modal-title">📖 CARA BERMAIN BAKIAK</h2></div>
+      <div class="modal-body">
+        <p class="modal-lead"><strong>BAKIAK RACE</strong> adalah permainan lomba bakiak. Kamu harus menjaga kekompakan tim agar bisa mencapai garis finish.</p>
+        <h3 class="modal-subtitle">Aturan:</h3>
+        <ol class="rule-list">
+          <li>Tekan tombol Mulai Bermain.</li>
+          <li>Gunakan tombol <b>A / D</b> atau <b>← / →</b>.</li>
+          <li>Tekan kiri dan kanan secara bergantian agar tim tetap kompak.</li>
+          <li>Jangan menekan tombol yang sama terlalu banyak karena tim bisa kehilangan keseimbangan.</li>
+          <li>Hindari batu, kayu, lubang, kotak, dan rintangan lainnya.</li>
+          <li>Kumpulkan koin untuk mendapatkan skor tambahan.</li>
+          <li>Lewati checkpoint agar ketika jatuh kamu tidak kembali ke awal.</li>
+          <li>Capai FINISH sebelum waktu habis.</li>
+          <li>Semakin cepat dan kompak, semakin tinggi skor.</li>
+        </ol>
+        <h3 class="modal-subtitle">Kontrol Keyboard:</h3>
+        <div class="key-row">
+          <span class="key-chip">A</span><span class="key-chip">←</span>
+          <span class="key-eq">=</span><span class="key-desc">Langkah Kiri</span>
+        </div>
+        <div class="key-row">
+          <span class="key-chip">D</span><span class="key-chip">→</span>
+          <span class="key-eq">=</span><span class="key-desc">Langkah Kanan</span>
+        </div>
+        <h3 class="modal-subtitle">Untuk HP:</h3>
+        <div class="key-row">
+          <span class="key-chip big">◀</span><span class="key-desc">Kiri</span>
+          <span class="key-chip big">▶</span><span class="key-desc">Kanan</span>
+        </div>
+        <div class="tip-box">
+          💡 <strong>Tips:</strong> Jaga ritme langkah tim. Tekan kiri dan kanan secara bergantian agar tetap seimbang!
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="btn-howto-close" class="btn btn-secondary btn-full" type="button">
+          <span class="btn-icon">✔</span><span class="btn-text">TUTUP</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PENGATURAN -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal-card">
+      <div class="modal-head"><h2 class="modal-title">⚙️ PENGATURAN</h2></div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <div class="setting-info"><span class="setting-icon">🎵</span><span class="setting-name">Musik</span></div>
+          <button id="btn-toggle-music" class="toggle-btn is-on" type="button">
+            <span class="toggle-knob"></span>
+            <span class="toggle-text" id="toggle-music-text">ON</span>
+          </button>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><span class="setting-icon">🔊</span><span class="setting-name">Sound Effect</span></div>
+          <button id="btn-toggle-sfx" class="toggle-btn is-on" type="button">
+            <span class="toggle-knob"></span>
+            <span class="toggle-text" id="toggle-sfx-text">ON</span>
+          </button>
+        </div>
+        <div class="setting-row setting-row-slider">
+          <div class="setting-info"><span class="setting-icon">🎚️</span><span class="setting-name">Volume</span></div>
+          <input id="volume-slider" class="volume-slider" type="range" min="0" max="100" value="70" />
+        </div>
+        <div class="setting-divider"></div>
+        <button id="btn-reset-score" class="btn btn-danger btn-full" type="button">
+          <span class="btn-icon">🔄</span><span class="btn-text">RESET SKOR TERTINGGI</span>
+        </button>
+      </div>
+      <div class="modal-foot">
+        <button id="btn-settings-close" class="btn btn-secondary btn-full" type="button">
+          <span class="btn-icon">✔</span><span class="btn-text">SELESAI</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-card modal-small">
+      <div class="modal-head"><h2 class="modal-title">⚠️ KONFIRMASI</h2></div>
+      <div class="modal-body">
+        <p class="modal-lead center" id="confirm-text">Yakin ingin menghapus skor tertinggi?</p>
+      </div>
+      <div class="modal-foot modal-foot-row">
+        <button id="btn-confirm-yes" class="btn btn-danger" type="button"><span class="btn-text">YA, HAPUS</span></button>
+        <button id="btn-confirm-no" class="btn btn-secondary" type="button"><span class="btn-text">BATAL</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PAUSE -->
+  <div class="modal-overlay" id="modal-pause">
+    <div class="modal-card modal-small">
+      <div class="modal-head"><h2 class="modal-title">⏸ GAME PAUSED</h2></div>
+      <div class="modal-body">
+        <p class="modal-lead center">Permainan dihentikan sementara.</p>
+        <div class="pause-stats">
+          <div class="pause-stat">
+            <span class="pause-stat-label">⭐ Skor</span>
+            <span class="pause-stat-value" id="pause-score">0</span>
+          </div>
+          <div class="pause-stat">
+            <span class="pause-stat-label">🪙 Koin</span>
+            <span class="pause-stat-value" id="pause-coins">0</span>
+          </div>
+          <div class="pause-stat">
+            <span class="pause-stat-label">🏁 Level</span>
+            <span class="pause-stat-value" id="pause-level">1</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot modal-foot-column">
+        <button id="btn-resume" class="btn btn-primary btn-full" type="button">
+          <span class="btn-icon">▶</span><span class="btn-text">LANJUTKAN</span>
+        </button>
+        <button id="btn-pause-menu" class="btn btn-ghost btn-full" type="button">
+          <span class="btn-icon">🏠</span><span class="btn-text">KEMBALI KE MENU</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL LEVEL SELESAI -->
+  <div class="modal-overlay" id="modal-level">
+    <div class="modal-card">
+      <div class="modal-head modal-head-celebrate"><h2 class="modal-title">🎯 LEVEL SELESAI!</h2></div>
+      <div class="modal-body">
+        <p class="modal-lead center" id="lc-message">Hebat! Tim kamu berhasil mencapai FINISH!</p>
+        <div class="result-grid">
+          <div class="result-row"><span class="result-label">⭐ Skor</span><span class="result-value" id="lc-score">0</span></div>
+          <div class="result-row"><span class="result-label">🪙 Koin</span><span class="result-value" id="lc-coins">0</span></div>
+          <div class="result-row"><span class="result-label">⏱️ Sisa waktu</span><span class="result-value" id="lc-time">0 detik</span></div>
+          <div class="result-row"><span class="result-label">🤝 Kekompakan</span><span class="result-value" id="lc-kompak">0%</span></div>
+          <div class="result-row"><span class="result-label">🏆 Bonus waktu</span><span class="result-value" id="lc-bonus">0</span></div>
+          <div class="result-row result-row-total"><span class="result-label">🏆 TOTAL</span><span class="result-value" id="lc-total">0</span></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="btn-next-level" class="btn btn-primary btn-full" type="button">
+          <span class="btn-icon">➡️</span><span class="btn-text">LANJUT LEVEL</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL MENANG -->
+  <div class="modal-overlay" id="modal-win">
+    <canvas id="confetti-canvas"></canvas>
+    <div class="modal-card modal-win">
+      <div class="modal-head modal-head-win">
+        <div class="win-trophies">🏆🏆🏆</div>
+        <h2 class="modal-title win-title">SELAMAT!</h2>
+        <p class="win-subtitle">JUARA BAKIAK RACE!</p>
+      </div>
+      <div class="modal-body">
+        <div class="new-highscore" id="new-highscore">🎉 HIGH SCORE BARU! 🎉</div>
+        <div class="result-grid">
+          <div class="result-row"><span class="result-label">⭐ SKOR AKHIR</span><span class="result-value" id="win-score">0</span></div>
+          <div class="result-row"><span class="result-label">🏆 SKOR TERTINGGI</span><span class="result-value" id="win-high">0</span></div>
+          <div class="result-row"><span class="result-label">🪙 TOTAL KOIN</span><span class="result-value" id="win-coins">0</span></div>
+          <div class="result-row"><span class="result-label">🎯 LEVEL SELESAI</span><span class="result-value" id="win-levels">3 / 3</span></div>
+        </div>
+      </div>
+      <div class="modal-foot modal-foot-column">
+        <button id="btn-win-again" class="btn btn-primary btn-full" type="button">
+          <span class="btn-icon">🔄</span><span class="btn-text">MAIN LAGI</span>
+        </button>
+        <button id="btn-win-menu" class="btn btn-ghost btn-full" type="button">
+          <span class="btn-icon">🏠</span><span class="btn-text">KEMBALI KE MENU</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL GAME OVER -->
+  <div class="modal-overlay" id="modal-gameover">
+    <div class="modal-card">
+      <div class="modal-head modal-head-gameover"><h2 class="modal-title">😢 GAME OVER</h2></div>
+      <div class="modal-body">
+        <p class="modal-lead center" id="go-message">Jangan menyerah! Coba lagi dan jaga kekompakan tim.</p>
+        <div class="result-grid">
+          <div class="result-row"><span class="result-label">⭐ Skor</span><span class="result-value" id="go-score">0</span></div>
+          <div class="result-row"><span class="result-label">🏆 Skor Tertinggi</span><span class="result-value" id="go-high">0</span></div>
+          <div class="result-row"><span class="result-label">🪙 Koin</span><span class="result-value" id="go-coins">0</span></div>
+          <div class="result-row"><span class="result-label">🎯 Level terakhir</span><span class="result-value" id="go-level">1</span></div>
+          <div class="result-row"><span class="result-label">❤️ Sisa Nyawa</span><span class="result-value" id="go-lives">0</span></div>
+        </div>
+      </div>
+      <div class="modal-foot modal-foot-column">
+        <button id="btn-go-retry" class="btn btn-primary btn-full" type="button">
+          <span class="btn-icon">🔄</span><span class="btn-text">COBA LAGI</span>
+        </button>
+        <button id="btn-go-menu" class="btn btn-ghost btn-full" type="button">
+          <span class="btn-icon">🏠</span><span class="btn-text">KEMBALI KE MENU</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<script>
+/* ============================================================
+   BAKIAK RACE — SCRIPT
+   ============================================================ */
+(function () {
+'use strict';
+
+/* ---------- AUDIO MANAGER ---------- */
+const AudioMgr = {
+  ctx: null, master: null, musicGain: null, sfxGain: null,
+  musicOn: true, sfxOn: true, volume: 0.7,
+  musicTimer: null, musicPlaying: false, musicIndex: 0,
+
+  init() {
+    if (this.ctx) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = this.volume;
+      this.master.connect(this.ctx.destination);
+      this.musicGain = this.ctx.createGain();
+      this.musicGain.gain.value = 0.35;
+      this.musicGain.connect(this.master);
+      this.sfxGain = this.ctx.createGain();
+      this.sfxGain.gain.value = 0.9;
+      this.sfxGain.connect(this.master);
+    } catch (e) { console.warn('AudioContext tidak didukung:', e); }
+  },
+  resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(()=>{}); },
+  setVolume(v) { this.volume = Math.max(0, Math.min(1, v)); if (this.master) this.master.gain.value = this.volume; },
+
+  tone(freq, dur, type, gainVal, delay) {
+    if (!this.sfxOn || !this.ctx) return;
+    const t0 = this.ctx.currentTime + (delay || 0);
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(gainVal || 0.25, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(this.sfxGain);
+    o.start(t0); o.stop(t0 + dur + 0.02);
+  },
+
+  click()      { this.tone(660, 0.08, 'square', 0.15); this.tone(990, 0.06, 'sine', 0.1, 0.02); },
+  stepGood()   { this.tone(520, 0.07, 'triangle', 0.2); this.tone(780, 0.06, 'sine', 0.12, 0.04); },
+  stepBad()    { this.tone(200, 0.16, 'sawtooth', 0.18); this.tone(140, 0.2, 'square', 0.12, 0.03); },
+  coin()       { this.tone(880, 0.08, 'square', 0.2); this.tone(1320, 0.12, 'sine', 0.18, 0.06); this.tone(1760, 0.1, 'sine', 0.14, 0.13); },
+  hit()        { this.tone(120, 0.2, 'sawtooth', 0.28); this.tone(80, 0.28, 'square', 0.18, 0.04); },
+  fall()       { for (let i = 0; i < 5; i++) this.tone(400 - i*60, 0.14, 'sawtooth', 0.2, i*0.07); },
+  checkpoint() { [660, 880, 1100, 1320].forEach((f,i)=> this.tone(f, 0.14, 'triangle', 0.22, i*0.07)); },
+  levelDone()  { [523, 659, 784, 1046, 1318].forEach((f,i)=> this.tone(f, 0.2, 'sine', 0.24, i*0.12)); },
+  win() { [523, 659, 784, 1046, 784, 1046, 1318, 1568].forEach((f, i) => this.tone(f, 0.26, 'triangle', 0.26, i * 0.14)); },
+  gameOver() { [440, 392, 349, 262, 220].forEach((f, i) => this.tone(f, 0.35, 'sawtooth', 0.22, i * 0.2)); },
+
+  startMusic(level) {
+    if (!this.ctx || !this.musicOn) return;
+    this.stopMusic();
+    this.musicPlaying = true;
+    this.musicIndex = 0;
+
+    const bpm = [200, 170, 145][level - 1] || 200;
+    const beat = 60 / bpm / 2;
+
+    const melody = [
+      523, 587, 659, 784, 880, 784, 659, 587,
+      659, 784, 880, 784, 659, 587, 523, 587,
+      659, 523, 587, 659, 784, 659, 587, 523,
+      587, 659, 784, 880, 784, 659, 523, 440
+    ];
+    const bass = [
+      131, 0, 196, 0, 165, 0, 196, 0,
+      175, 0, 220, 0, 196, 0, 165, 0,
+      131, 0, 196, 0, 165, 0, 196, 0,
+      175, 0, 220, 0, 196, 0, 131, 0
+    ];
+    const total = melody.length;
+    const tick = () => {
+      if (!this.musicPlaying) return;
+      const i = this.musicIndex % total;
+      const m = melody[i];
+      const b = bass[i];
+      const t = beat * 1.7;
+      if (m) this.musicNote(m, t, 'square', 0.13);
+      if (i % 2 === 0 && m) this.musicNote(m * 2, t * 0.6, 'triangle', 0.05);
+      if (b) this.musicNote(b, t * 1.8, 'sine', 0.22);
+      this.musicIndex++;
+      this.musicTimer = setTimeout(tick, beat * 1000 * 2);
+    };
+    tick();
+  },
+
+  musicNote(freq, dur, type, vol) {
+    if (!this.ctx || !this.musicOn) return;
+    const t0 = this.ctx.currentTime;
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(vol, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(this.musicGain);
+    o.start(t0); o.stop(t0 + dur + 0.05);
+  },
+
+  stopMusic() {
+    this.musicPlaying = false;
+    if (this.musicTimer) { clearTimeout(this.musicTimer); this.musicTimer = null; }
+  }
+};
+
+/* ---------- STORAGE ---------- */
+const KEY_HIGH = 'bakiak_highScore';
+const KEY_MUSIC = 'bakiak_musicOn';
+const KEY_SFX = 'bakiak_sfxOn';
+const KEY_VOL = 'bakiak_volume';
+const KEY_PLAYS = 'bakiak_plays';
+const KEY_WINS = 'bakiak_wins';
+const KEY_LOSSES = 'bakiak_losses';
+
+const Storage = {
+  get(k, def) { try { const v = localStorage.getItem(k); return v === null ? def : v; } catch { return def; } },
+  set(k, v) { try { localStorage.setItem(k, String(v)); } catch {} },
+  remove(k) { try { localStorage.removeItem(k); } catch {} },
+  getHigh() { return parseInt(this.get(KEY_HIGH, '0'), 10) || 0; },
+  setHigh(v) { this.set(KEY_HIGH, v); },
+  resetHigh() { this.remove(KEY_HIGH); },
+  getMusic() { return this.get(KEY_MUSIC, '1') === '1'; },
+  setMusic(v) { this.set(KEY_MUSIC, v ? '1' : '0'); },
+  getSfx() { return this.get(KEY_SFX, '1') === '1'; },
+  setSfx(v) { this.set(KEY_SFX, v ? '1' : '0'); },
+  getVolume() { const v = parseFloat(this.get(KEY_VOL, '0.7')); return isNaN(v) ? 0.7 : v; },
+  setVolume(v) { this.set(KEY_VOL, v); },
+  incPlays() { this.set(KEY_PLAYS, (parseInt(this.get(KEY_PLAYS, '0'), 10) || 0) + 1); },
+  incWins() { this.set(KEY_WINS, (parseInt(this.get(KEY_WINS, '0'), 10) || 0) + 1); },
+  incLosses() { this.set(KEY_LOSSES, (parseInt(this.get(KEY_LOSSES, '0'), 10) || 0) + 1); }
+};
+
+/* ---------- DOM HELPERS ---------- */
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+
+/* ---------- LEVELS ---------- */
+const LEVELS = [
+  { id: 1, name: '🌱 LEVEL 1 — PEMULA', desc: 'Pemanasan dulu, jangan sampai jatuh!',
+    time: 60, obstacles: 7, coins: 15, speed: 1.00, drain: 0.55, moving: false, distance: 4200 },
+  { id: 2, name: '🔥 LEVEL 2 — MENENGAH', desc: 'Mulai serius! Jaga kekompakan tim.',
+    time: 50, obstacles: 12, coins: 12, speed: 1.25, drain: 0.85, moving: true, distance: 5000 },
+  { id: 3, name: '🏆 LEVEL 3 — AHLI', desc: 'Final! Buktikan timmu paling kompak!',
+    time: 40, obstacles: 17, coins: 10, speed: 1.55, drain: 1.15, moving: true, distance: 5800 }
+];
+
+/* ---------- GAME STATE ---------- */
+const game = {
+  running: false, paused: false, countdownActive: false,
+  level: 1, score: 0, coins: 0, lives: 3, kekompakan: 100,
+  timeLeft: 60, distance: 0, lastStep: null,
+  wobble: 0, stepAnim: 0, stepDir: 0,
+  obstacles: [], coinItems: [], checkpoints: [],
+  fallen: false, fallTimer: 0, shake: 0,
+  checkpointDist: 0, checkpointCount: 0, finish: false,
+  totals: { score: 0, coins: 0, time: 0, kompak: 100 },
+  lastFrame: 0
+};
+
+/* ---------- CANVAS ---------- */
+const canvas = $('game-canvas');
+const ctx = canvas.getContext('2d');
+const FX = $('fx-layer');
+let W = 960, H = 420;
+
+function resizeCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const cw = rect.width || 960;
+  const ch = rect.height || 420;
+  canvas.width = Math.floor(cw * dpr);
+  canvas.height = Math.floor(ch * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  W = cw; H = ch;
+}
+window.addEventListener('resize', resizeCanvas);
+
+/* ---------- LEVEL GENERATION ---------- */
+function generateLevel(levelIdx) {
+  const cfg = LEVELS[levelIdx - 1];
+  game.obstacles = [];
+  game.coinItems = [];
+  game.checkpoints = [];
+
+  const startZone = 900;
+  const finishZone = cfg.distance - 500;
+  const usable = finishZone - startZone;
+
+  const types = [
+    { emoji: '🪨', w: 44, h: 40 },
+    { emoji: '🪵', w: 56, h: 32 },
+    { emoji: '💧', w: 64, h: 26 },
+    { emoji: '📦', w: 46, h: 46 },
+    { emoji: '🕳️', w: 66, h: 28 },
+    { emoji: '🚧', w: 52, h: 46 },
+    { emoji: '🌳', w: 52, h: 60 }
+  ];
+
+  for (let i = 0; i < cfg.obstacles; i++) {
+    const t = types[Math.floor(Math.random() * types.length)];
+    const baseX = startZone + (usable / cfg.obstacles) * i + (Math.random() * 130 - 65);
+    const x = Math.max(startZone, Math.min(finishZone - 100, baseX));
+    const o = {
+      x: x,
+      y: H * 0.55 + (Math.random() * 26 - 13),
+      baseY: 0,
+      w: t.w, h: t.h, emoji: t.emoji, hit: false,
+      moving: cfg.moving && Math.random() < 0.55,
+      phase: Math.random() * Math.PI * 2,
+      speed: 1.0 + Math.random() * 1.4,
+      range: 18 + Math.random() * 16
+    };
+    o.baseY = o.y;
+    game.obstacles.push(o);
+  }
+
+  for (let i = 0; i < cfg.coins; i++) {
+    const x = startZone + 180 + (usable - 360) * (i / cfg.coins) + (Math.random() * 90 - 45);
+    game.coinItems.push({
+      x: x,
+      y: H * 0.42 + Math.random() * 60,
+      taken: false,
+      spin: Math.random() * Math.PI * 2
+    });
+  }
+
+  for (let i = 1; i <= 2; i++) {
+    const x = startZone + (usable / 3) * i;
+    game.checkpoints.push({ x: x, passed: false, index: i });
+  }
+}
+
+/* ---------- INIT LEVEL ---------- */
+function initLevel(levelIdx) {
+  game.level = levelIdx;
+  const cfg = LEVELS[levelIdx - 1];
+
+  game.score = game.totals.score;
+  game.coins = game.totals.coins;
+  game.lives = 3;
+  game.kekompakan = 100;
+  game.timeLeft = cfg.time;
+  game.distance = 0;
+  game.lastStep = null;
+  game.wobble = 0;
+  game.stepAnim = 0;
+  game.stepDir = 0;
+  game.fallen = false;
+  game.fallTimer = 0;
+  game.shake = 0;
+  game.checkpointDist = 0;
+  game.checkpointCount = 0;
+  game.finish = false;
+  game.running = false;
+  game.paused = false;
+
+  resizeCanvas();
+  generateLevel(levelIdx);
+  updateHUD();
+
+  $('level-intro-title').textContent = cfg.name;
+  $('level-intro-desc').textContent = cfg.desc;
+  const intro = $('level-intro');
+  intro.classList.add('show');
+
+  setTimeout(() => {
+    intro.classList.remove('show');
+    startCountdown();
+  }, 1700);
+}
+
+function startCountdown() {
+  const cd = $('countdown');
+  let n = 3;
+  game.countdownActive = true;
+  const show = (txt) => {
+    cd.textContent = txt;
+    cd.classList.remove('show');
+    void cd.offsetWidth;
+    cd.classList.add('show');
+  };
+  show(n);
+  const step = () => {
+    n--;
+    if (n > 0) { show(n); setTimeout(step, 700); }
+    else if (n === 0) {
+      show('GO!');
+      setTimeout(() => {
+        cd.classList.remove('show');
+        game.countdownActive = false;
+        beginPlay();
+      }, 700);
+    }
+  };
+  setTimeout(step, 700);
+}
+
+function beginPlay() {
+  game.running = true;
+  game.paused = false;
+  game.lastFrame = performance.now();
+  AudioMgr.startMusic(game.level);
+  requestAnimationFrame(loop);
+}
+
+/* ---------- GAME LOOP ---------- */
+function loop(now) {
+  if (!game.running || game.paused) {
+    game.lastFrame = now;
+    if (game.running) requestAnimationFrame(loop);
+    return;
+  }
+  const dt = Math.min(50, now - game.lastFrame) / 1000;
+  game.lastFrame = now;
+  update(dt);
+  render();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- UPDATE ---------- */
+function update(dt) {
+  const cfg = LEVELS[game.level - 1];
+
+  if (!game.finish && !game.fallen) {
+    game.timeLeft -= dt;
+    if (game.timeLeft <= 0) {
+      game.timeLeft = 0;
+      updateHUD();
+      endGame('time');
+      return;
+    }
+  }
+
+  if (game.fallen) {
+    game.fallTimer -= dt;
+    if (game.fallTimer <= 0) {
+      game.fallen = false;
+      game.distance = game.checkpointDist;
+      game.kekompakan = 65;
+      game.obstacles.forEach(o => o.hit = false);
+      updateHUD();
+    }
+  } else {
+    game.kekompakan -= cfg.drain * dt * 1.5;
+    if (game.kekompakan < 0) game.kekompakan = 0;
+    if (game.kekompakan <= 0 && !game.fallen) doFall();
+  }
+
+  if (game.stepAnim > 0) game.stepAnim -= dt;
+  game.wobble *= 0.94;
+
+  for (const o of game.obstacles) {
+    if (o.moving) {
+      o.phase += dt * o.speed;
+      o.y = o.baseY + Math.sin(o.phase) * o.range;
+    }
+  }
+  for (const c of game.coinItems) c.spin += dt * 4;
+
+  if (game.shake > 0) {
+    game.shake -= dt * 60;
+    if (game.shake < 0) game.shake = 0;
+  }
+
+  if (!game.finish && game.distance >= cfg.distance) {
+    game.finish = true;
+    completeLevel();
+    return;
+  }
+
+  updateHUD();
+}
+
+/* ---------- STEP ---------- */
+function doStep(dir) {
+  if (!game.running || game.paused || game.fallen || game.finish) return;
+  const cfg = LEVELS[game.level - 1];
+
+  if (game.lastStep === dir) {
+    game.kekompakan -= 15;
+    game.wobble = 1;
+    game.shake = 10;
+    flashScreen();
+    showFloat('TIDAK KOMPAK!', 0.5, 0.35, 'bad');
+    AudioMgr.stepBad();
+    game.lastStep = null;
+    if (game.kekompakan <= 0) doFall();
+  } else {
+    game.lastStep = dir;
+    game.kekompakan = Math.min(100, game.kekompakan + 5);
+    game.score += 2;
+    game.totals.score = game.score;
+
+    const advance = 52 * cfg.speed;
+    game.distance += advance;
+
+    game.stepAnim = 0.22;
+    game.stepDir = (dir === 'left') ? -1 : 1;
+    game.wobble = 0.35 * game.stepDir;
+
+    showFloat('KOMPAK!', 0.5, 0.5, 'good');
+    AudioMgr.stepGood();
+
+    checkCollisions();
+  }
+}
+
+function checkCollisions() {
+  const playerWorld = game.distance;
+
+  for (const o of game.obstacles) {
+    if (o.hit) continue;
+    if (Math.abs(o.x - playerWorld) < 46) {
+      o.hit = true;
+      game.kekompakan -= 25;
+      game.score = Math.max(0, game.score - 10);
+      game.totals.score = game.score;
+      game.wobble = 0.9;
+      game.shake = 14;
+      flashScreen();
+      showFloat('AWAS!', 0.5, 0.4, 'bad');
+      AudioMgr.hit();
+      if (game.kekompakan <= 0) doFall();
+    }
+  }
+
+  for (const c of game.coinItems) {
+    if (c.taken) continue;
+    if (Math.abs(c.x - playerWorld) < 38) {
+      c.taken = true;
+      game.score += 10;
+      game.coins += 1;
+      game.totals.score = game.score;
+      game.totals.coins = game.coins;
+      showFloat('+10', 0.5, 0.35, 'coin');
+      AudioMgr.coin();
+    }
+  }
+
+  for (const cp of game.checkpoints) {
+    if (cp.passed) continue;
+    if (Math.abs(cp.x - playerWorld) < 42) {
+      cp.passed = true;
+      game.checkpointDist = game.distance;
+      game.checkpointCount++;
+      game.score += 25;
+      game.totals.score = game.score;
+      game.kekompakan = Math.min(100, game.kekompakan + 15);
+      showFloat('CHECKPOINT!', 0.5, 0.3, 'good');
+      AudioMgr.checkpoint();
+    }
+  }
+}
+
+function doFall() {
+  if (game.fallen) return;
+  game.fallen = true;
+  game.fallTimer = 1.6;
+  game.lives -= 1;
+  game.score = Math.max(0, game.score - 25);
+  game.totals.score = game.score;
+  game.shake = 22;
+  flashScreen();
+  AudioMgr.fall();
+  showFloat('JATUH!', 0.5, 0.3, 'bad');
+  updateHUD();
+  if (game.lives <= 0) setTimeout(() => endGame('lives'), 1400);
+}
+
+/* ---------- HUD & FX ---------- */
+function updateHUD() {
+  $('hud-lives').textContent = game.lives;
+  $('hud-score').textContent = Math.floor(game.score);
+  $('hud-coins').textContent = game.coins;
+  $('hud-time').textContent = Math.ceil(game.timeLeft);
+  $('hud-level').textContent = game.level;
+
+  const tBox = $('hud-time-box');
+  if (game.timeLeft <= 10) tBox.classList.add('is-low');
+  else tBox.classList.remove('is-low');
+
+  const k = Math.max(0, Math.min(100, game.kekompakan));
+  $('balance-fill').style.width = k + '%';
+  $('balance-text').textContent = Math.round(k) + '%';
+  if (k <= 30) {
+    $('balance-fill').classList.add('is-low');
+    $('balance-text').classList.add('is-low');
+  } else {
+    $('balance-fill').classList.remove('is-low');
+    $('balance-text').classList.remove('is-low');
+  }
+}
+
+function showFloat(text, xN, yN, type) {
+  const el = document.createElement('div');
+  el.className = 'float-text ' + (type || '');
+  el.textContent = text;
+  el.style.left = (xN * 100) + '%';
+  el.style.top = (yN * 100) + '%';
+  FX.appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 1000);
+}
+
+function flashScreen() {
+  const f = $('flash-layer');
+  f.classList.add('on');
+  setTimeout(() => f.classList.remove('on'), 130);
+}
+
+/* ---------- RENDER ---------- */
+function render() {
+  let ox = 0, oy = 0;
+  if (game.shake > 0) {
+    ox = (Math.random() - 0.5) * game.shake * 0.5;
+    oy = (Math.random() - 0.5) * game.shake * 0.5;
+  }
+  ctx.clearRect(-20, -20, W + 40, H + 40);
+  ctx.save();
+  ctx.translate(ox, oy);
+
+  drawSky();
+  drawHills();
+  drawGround();
+  drawTrack();
+  drawCheckpoints();
+  drawCoins();
+  drawObstacles();
+  drawPlayer();
+  drawOverlay();
+
+  ctx.restore();
+}
+
+function drawSky() {
+  const g = ctx.createLinearGradient(0, 0, 0, H * 0.65);
+  g.addColorStop(0, '#9fe0ff'); g.addColorStop(1, '#e3f6ff');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H * 0.65);
+
+  ctx.save();
+  ctx.globalAlpha = 0.85;
+  ctx.fillStyle = '#ffca28';
+  ctx.beginPath(); ctx.arc(W - 90, 70, 46, 0, Math.PI * 2); ctx.fill();
+  ctx.globalAlpha = 0.22;
+  ctx.beginPath(); ctx.arc(W - 90, 70, 68, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+
+  const cOff = (game.distance * 0.04) % (W + 300);
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  drawCloud(W * 0.2 - cOff, 80, 1.0);
+  drawCloud(W * 0.65 - cOff, 55, 0.75);
+  drawCloud(W * 1.1 - cOff, 95, 0.9);
+  drawCloud(W * 0.4 - cOff + 420, 70, 0.8);
+}
+
+function drawCloud(x, y, s) {
+  ctx.save();
+  ctx.translate(x, y); ctx.scale(s, s);
+  ctx.beginPath();
+  ctx.arc(0, 0, 26, 0, Math.PI * 2);
+  ctx.arc(28, -6, 32, 0, Math.PI * 2);
+  ctx.arc(62, 2, 24, 0, Math.PI * 2);
+  ctx.arc(30, 10, 26, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawHills() {
+  const off = (game.distance * 0.12) % (W * 0.6);
+  ctx.fillStyle = '#8fdc6f';
+  for (let i = -1; i < 4; i++) {
+    const bx = i * (W * 0.35) - off;
+    ctx.beginPath();
+    ctx.ellipse(bx, H * 0.62, W * 0.28, H * 0.22, 0, Math.PI, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = '#74c957';
+  const off2 = (game.distance * 0.2) % (W * 0.28);
+  for (let i = -1; i < 5; i++) {
+    const bx = i * (W * 0.28) - off2;
+    ctx.beginPath();
+    ctx.ellipse(bx, H * 0.65, W * 0.22, H * 0.16, 0, Math.PI, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawGround() {
+  const gy = H * 0.62;
+  const g = ctx.createLinearGradient(0, gy, 0, H);
+  g.addColorStop(0, '#9be07a');
+  g.addColorStop(0.5, '#5cbb45');
+  g.addColorStop(1, '#2e7d32');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, gy, W, H - gy);
+  ctx.fillStyle = '#6ecb52';
+  ctx.fillRect(0, gy, W, 10);
+}
+
+function drawTrack() {
+  const gy = H * 0.62;
+
+  const scrollX = game.distance % 200;
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+  ctx.lineWidth = 4;
+  ctx.setLineDash([40, 30]);
+  ctx.lineDashOffset = -scrollX;
+  ctx.beginPath();
+  ctx.moveTo(0, gy + H * 0.16);
+  ctx.lineTo(W, gy + H * 0.16);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.lineDashOffset = 0;
+
+  const flagOff = game.distance % 320;
+  for (let i = -1; i < 6; i++) drawFlag(i * 320 - flagOff, gy - 6);
+
+  const startX = 220 - game.distance;
+  if (startX > -120 && startX < W + 120) drawStartLine(startX, gy);
+
+  const finishWorld = LEVELS[game.level - 1].distance;
+  const finishX = 220 + (finishWorld - game.distance);
+  if (finishX > -140 && finishX < W + 140) drawFinishLine(finishX, gy);
+}
+
+function drawFlag(x, baseY) {
+  ctx.fillStyle = '#8b5a2b';
+  ctx.fillRect(x, baseY - 50, 4, 50);
+  ctx.fillStyle = '#43a047';
+  ctx.beginPath();
+  ctx.moveTo(x + 4, baseY - 50);
+  ctx.lineTo(x + 30, baseY - 44);
+  ctx.lineTo(x + 4, baseY - 38);
+  ctx.closePath(); ctx.fill();
+}
+
+function drawStartLine(x, gy) {
+  ctx.save();
+  ctx.translate(x, gy);
+  ctx.fillStyle = '#8b5a2b';
+  ctx.fillRect(-2, -110, 4, 110);
+  ctx.fillRect(120, -110, 4, 110);
+  ctx.fillStyle = '#43a047';
+  ctx.beginPath();
+  ctx.moveTo(0, -110); ctx.lineTo(122, -104);
+  ctx.lineTo(122, -80); ctx.lineTo(0, -86);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 14px Fredoka, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('START', 60, -95);
+  ctx.restore();
+}
+
+function drawFinishLine(x, gy) {
+  ctx.save();
+  ctx.translate(x, gy);
+  ctx.fillStyle = '#8b5a2b';
+  ctx.fillRect(-48, -120, 6, 120);
+  ctx.fillRect(42, -120, 6, 120);
+
+  const bw = 92, bh = 34, bx = -48, by = -120;
+  const cols = 6, rows = 2, cw = bw / cols, ch = bh / rows;
+  for (let r = 0; r < rows; r++) {
+    for (let cc = 0; cc < cols; cc++) {
+      ctx.fillStyle = (r + cc) % 2 === 0 ? '#ffffff' : '#111111';
+      ctx.fillRect(bx + cc * cw, by + r * ch, cw, ch);
+    }
+  }
+  ctx.strokeStyle = '#43a047';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(bx, by, bw, bh);
+
+  ctx.fillStyle = '#ffca28';
+  ctx.font = 'bold 22px Fredoka, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = '#2e7d32';
+  ctx.lineWidth = 5;
+  ctx.strokeText('FINISH', 0, -135);
+  ctx.fillText('FINISH', 0, -135);
+
+  for (let i = 0; i < 8; i++) {
+    ctx.fillStyle = i % 2 === 0 ? '#fff' : '#111';
+    ctx.fillRect(i * 12 - 48, -4, 12, 12);
+    ctx.fillStyle = i % 2 === 0 ? '#111' : '#fff';
+    ctx.fillRect(i * 12 - 48, 8, 12, 10);
+  }
+  ctx.restore();
+}
+
+function drawCheckpoints() {
+  for (const cp of game.checkpoints) {
+    const sx = 220 + (cp.x - game.distance);
+    if (sx < -100 || sx > W + 100) continue;
+    const y = H * 0.62;
+    ctx.save();
+    ctx.translate(sx, y);
+
+    ctx.fillStyle = cp.passed ? '#2e7d32' : '#9a9a9a';
+    ctx.fillRect(-3, -100, 6, 100);
+
+    ctx.fillStyle = cp.passed ? '#66bb6a' : '#ffca28';
+    ctx.strokeStyle = cp.passed ? '#2e7d32' : '#b8860b';
+    ctx.lineWidth = 3;
+    roundRect(ctx, -58, -132, 116, 34, 8);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = cp.passed ? '#fff' : '#5a3a00';
+    ctx.font = 'bold 14px Fredoka, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('CHECKPOINT ' + cp.index, 0, -115);
+
+    if (!cp.passed) {
+      ctx.shadowColor = '#ffca28';
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.arc(0, -115, 20, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,202,40,0.6)';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+    ctx.restore();
+  }
+}
+
+function drawCoins() {
+  for (const c of game.coinItems) {
+    if (c.taken) continue;
+    const sx = 220 + (c.x - game.distance);
+    if (sx < -60 || sx > W + 60) continue;
+    const sy = c.y;
+    const scaleX = Math.abs(Math.cos(c.spin));
+    const rx = 14 * (0.25 + scaleX * 0.75);
+
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.shadowColor = '#ffca28';
+    ctx.shadowBlur = 14;
+
+    const g = ctx.createLinearGradient(-14, 0, 14, 0);
+    g.addColorStop(0, '#f9a825');
+    g.addColorStop(0.5, '#ffe066');
+    g.addColorStop(1, '#f9a825');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = '#b8860b';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx * 0.7, 10, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    if (scaleX > 0.4) {
+      ctx.fillStyle = '#b8860b';
+      ctx.font = 'bold 14px Fredoka, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('$', 0, 1);
+    }
+    ctx.restore();
+  }
+}
+
+function drawObstacles() {
+  for (const o of game.obstacles) {
+    const sx = 220 + (o.x - game.distance);
+    if (sx < -100 || sx > W + 100) continue;
+    ctx.save();
+    ctx.translate(sx, o.y);
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.beginPath();
+    ctx.ellipse(0, o.h * 0.5 + 4, o.w * 0.5, 6, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = Math.max(o.w, o.h) + 'px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(o.emoji, 0, 0);
+    ctx.restore();
+  }
+}
+
+function drawPlayer() {
+  const px = 220;
+  const py = H * 0.62 + 20;
+
+  ctx.save();
+  ctx.translate(px, py);
+
+  if (game.fallen) {
+    const t = 1 - (game.fallTimer / 1.6);
+    ctx.rotate(-t * 0.7);
+    ctx.translate(0, t * 22);
+  }
+  ctx.rotate(game.wobble * 0.28);
+
+  const stepT = game.stepAnim > 0 ? Math.sin(game.stepAnim * 25) : 0;
+  const bob = Math.abs(stepT) * 3;
+
+  const woodW = 230, woodH = 16;
+  ctx.save();
+  ctx.translate(-woodW / 2, 0);
+  const g = ctx.createLinearGradient(0, 0, 0, woodH);
+  g.addColorStop(0, '#d8a56a');
+  g.addColorStop(1, '#8a5520');
+  ctx.fillStyle = g;
+  roundRect(ctx, 0, 0, woodW, woodH, 8);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(240,192,138,0.65)';
+  ctx.fillRect(6, 3, woodW - 12, 4);
+  ctx.fillStyle = 'rgba(90,50,20,0.55)';
+  ctx.fillRect(14, woodH - 5, woodW - 28, 3);
+  ctx.restore();
+
+  const spacing = 72;
+  const chars = [
+    { x: -spacing, shirt: '#43a047', shirt2: '#2e7d32', hair: '#33251c', shoe: '#2b2b2b' },
+    { x: 0,        shirt: '#ffffff', shirt2: '#e8e8e8', hair: '#1e1e1e', shoe: '#1f1f1f' },
+    { x: spacing,  shirt: '#ffca28', shirt2: '#f9a825', hair: '#4a2f1c', shoe: '#333333' }
+  ];
+  for (const c of chars) drawChar(ctx, c.x, bob, c, stepT);
+
+  ctx.restore();
+}
+
+function drawChar(c, cx, bob, cfg, stepT) {
+  c.save();
+  c.translate(cx, -bob);
+
+  c.fillStyle = '#3d5a80';
+  const legOff = stepT * 3;
+  c.fillRect(-14, -22, 10, 24);
+  c.fillRect(4, -22 + legOff, 10, 24);
+
+  c.fillStyle = cfg.shoe;
+  c.beginPath(); c.ellipse(-9, 4, 10, 6, 0, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.ellipse(9, 4 + legOff, 10, 6, 0, 0, Math.PI * 2); c.fill();
+
+  c.fillStyle = cfg.shirt;
+  roundRect(c, -18, -60, 36, 42, 12);
+  c.fill();
+  c.fillStyle = cfg.shirt2;
+  c.fillRect(-18, -28, 36, 7);
+
+  c.strokeStyle = '#ffd9b3';
+  c.lineWidth = 9; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(-16, -52); c.lineTo(-26, -30 + stepT * 3); c.stroke();
+  c.beginPath(); c.moveTo(16, -52);  c.lineTo(26, -30 - stepT * 3); c.stroke();
+
+  c.fillStyle = '#ffd9b3';
+  c.beginPath(); c.arc(0, -78, 18, 0, Math.PI * 2); c.fill();
+
+  c.fillStyle = cfg.hair;
+  c.beginPath(); c.arc(0, -80, 18, Math.PI, Math.PI * 2); c.fill();
+
+  c.fillStyle = '#43a047';
+  c.fillRect(-19, -88, 38, 5);
+
+  c.fillStyle = '#222';
+  c.beginPath(); c.arc(-6, -76, 2.6, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(6, -76, 2.6, 0, Math.PI * 2); c.fill();
+
+  c.strokeStyle = '#222'; c.lineWidth = 2;
+  c.beginPath(); c.arc(0, -70, 6, 0.2 * Math.PI, 0.8 * Math.PI); c.stroke();
+
+  c.fillStyle = 'rgba(255,150,150,0.7)';
+  c.beginPath(); c.arc(-11, -70, 3.2, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(11, -70, 3.2, 0, Math.PI * 2); c.fill();
+
+  c.restore();
+}
+
+function drawOverlay() {
+  if (game.kekompakan < 30) {
+    const intensity = (30 - game.kekompakan) / 30;
+    const g = ctx.createRadialGradient(W/2, H/2, Math.min(W, H) * 0.3, W/2, H/2, Math.max(W, H) * 0.7);
+    g.addColorStop(0, 'rgba(255,0,0,0)');
+    g.addColorStop(1, 'rgba(200,0,0,' + (0.35 * intensity) + ')');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath();
+}
+
+/* ---------- COMPLETE / WIN / GAMEOVER ---------- */
+function completeLevel() {
+  game.running = false;
+  game.finish = true;
+  AudioMgr.stopMusic();
+  AudioMgr.levelDone();
+
+  const timeRemaining = Math.max(0, Math.floor(game.timeLeft));
+  const bonus = timeRemaining * 5;
+  const levelScore = Math.floor(game.score);
+  const total = levelScore + bonus;
+
+  game.totals.score = total;
+  game.totals.coins = game.coins;
+  game.totals.time += (LEVELS[game.level - 1].time - timeRemaining);
+  game.totals.kompak = Math.round(game.kekompakan);
+
+  $('lc-score').textContent = levelScore;
+  $('lc-coins').textContent = game.coins;
+  $('lc-time').textContent = timeRemaining + ' detik';
+  $('lc-kompak').textContent = Math.round(game.kekompakan) + '%';
+  $('lc-bonus').textContent = bonus;
+  $('lc-total').textContent = total;
+
+  const msgs = [
+    'Hebat! Tim kamu berhasil mencapai FINISH!',
+    'Kompak banget! Lanjut ke level berikutnya!',
+    'Mantap! Terus jaga kekompakan!'
+  ];
+  $('lc-message').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+
+  game.score = total;
+
+  setTimeout(() => {
+    if (game.level >= 3) showWin();
+    else openModal('modal-level');
+  }, 500);
+}
+
+function showWin() {
+  game.running = false;
+  AudioMgr.stopMusic();
+  AudioMgr.win();
+  Storage.incWins();
+
+  const finalScore = Math.floor(game.totals.score);
+  const finalCoins = game.totals.coins;
+
+  $('win-score').textContent = finalScore;
+  $('win-coins').textContent = finalCoins;
+  $('win-levels').textContent = '3 / 3';
+
+  const prev = Storage.getHigh();
+  const isNew = finalScore > prev;
+  if (isNew) {
+    Storage.setHigh(finalScore);
+    $('new-highscore').classList.add('show');
+  } else {
+    $('new-highscore').classList.remove('show');
+  }
+  $('win-high').textContent = Storage.getHigh();
+  refreshHighScore();
+
+  openModal('modal-win');
+  startConfetti();
+}
+
+function endGame(reason) {
+  if (!game.running && !game.finish) return;
+  game.running = false;
+  game.paused = false;
+  AudioMgr.stopMusic();
+  AudioMgr.gameOver();
+  Storage.incLosses();
+
+  if (reason === 'time') {
+    $('go-message').textContent = '⏰ Waktu habis! Tim kamu belum berhasil mencapai finish.';
+  } else {
+    $('go-message').textContent = 'Jangan menyerah! Coba lagi dan jaga kekompakan tim.';
+  }
+
+  $('go-score').textContent = Math.floor(game.totals.score);
+  $('go-coins').textContent = game.totals.coins;
+  $('go-level').textContent = game.level;
+  $('go-lives').textContent = Math.max(0, game.lives);
+
+  const fs = Math.floor(game.totals.score);
+  if (fs > Storage.getHigh()) {
+    Storage.setHigh(fs);
+    refreshHighScore();
+  }
+  $('go-high').textContent = Storage.getHigh();
+
+  openModal('modal-gameover');
+}
+
+/* ---------- CONFETTI ---------- */
+let confettiRAF = null;
+
+function startConfetti() {
+  const cvs = $('confetti-canvas');
+  const c = cvs.getContext('2d');
+  const r = cvs.getBoundingClientRect();
+  cvs.width = r.width;
+  cvs.height = r.height;
+
+  const colors = ['#43a047','#ffca28','#29b6f6','#ef5350','#ff9800','#9575cd','#ffffff'];
+  const parts = [];
+  for (let i = 0; i < 130; i++) {
+    parts.push({
+      x: Math.random() * cvs.width,
+      y: -20 - Math.random() * cvs.height,
+      w: 6 + Math.random() * 8,
+      h: 8 + Math.random() * 10,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vy: 1.5 + Math.random() * 3,
+      vx: -1 + Math.random() * 2,
+      rot: Math.random() * Math.PI * 2,
+      vr: -0.15 + Math.random() * 0.3,
+      sway: Math.random() * Math.PI * 2
+    });
+  }
+
+  let lastT = performance.now();
+  function tick(t) {
+    const dt = Math.min(50, t - lastT) / 16.67;
+    lastT = t;
+    c.clearRect(0, 0, cvs.width, cvs.height);
+    for (const p of parts) {
+      p.sway += 0.05;
+      p.x += p.vx + Math.sin(p.sway) * 0.6;
+      p.y += p.vy * dt;
+      p.rot += p.vr;
+      if (p.y > cvs.height + 20) { p.y = -20; p.x = Math.random() * cvs.width; }
+      c.save();
+      c.translate(p.x, p.y);
+      c.rotate(p.rot);
+      c.fillStyle = p.color;
+      c.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      c.restore();
+    }
+    confettiRAF = requestAnimationFrame(tick);
+  }
+  if (confettiRAF) cancelAnimationFrame(confettiRAF);
+  confettiRAF = requestAnimationFrame(tick);
+
+  setTimeout(() => {
+    if (confettiRAF) cancelAnimationFrame(confettiRAF);
+    confettiRAF = null;
+    c.clearRect(0, 0, cvs.width, cvs.height);
+  }, 8000);
+}
+
+/* ---------- UI MANAGEMENT ---------- */
+function showScreen(id) {
+  $$('.screen').forEach(s => s.classList.remove('is-active'));
+  const el = $(id);
+  if (el) el.classList.add('is-active');
+}
+function openModal(id) { const el = $(id); if (el) el.classList.add('show'); }
+function closeModal(id) { const el = $(id); if (el) el.classList.remove('show'); }
+function closeAllModals() { $$('.modal-overlay').forEach(m => m.classList.remove('show')); }
+function refreshHighScore() { $('highscore-value').textContent = Storage.getHigh(); }
+
+function updateMusicUI() {
+  const on = AudioMgr.musicOn;
+  $('menu-music-icon').textContent = on ? '🔊' : '🔇';
+  $('menu-music-text').textContent = on ? 'MUSIK ON' : 'MUSIK OFF';
+  $('btn-toggle-music').classList.toggle('is-on', on);
+  $('toggle-music-text').textContent = on ? 'ON' : 'OFF';
+}
+function updateSfxUI() {
+  const on = AudioMgr.sfxOn;
+  $('btn-toggle-sfx').classList.toggle('is-on', on);
+  $('toggle-sfx-text').textContent = on ? 'ON' : 'OFF';
+}
+
+/* ---------- FLOW ---------- */
+function startGame() {
+  AudioMgr.init();
+  AudioMgr.resume();
+  game.totals = { score: 0, coins: 0, time: 0, kompak: 100 };
+  game.score = 0;
+  game.coins = 0;
+  Storage.incPlays();
+  closeAllModals();
+  showScreen('screen-game');
+  setTimeout(() => {
+    resizeCanvas();
+    initLevel(1);
+  }, 60);
+}
+
+function nextLevel() {
+  closeAllModals();
+  const next = game.level + 1;
+  if (next > 3) { showWin(); return; }
+  game.score = game.totals.score;
+  game.coins = game.totals.coins;
+  initLevel(next);
+}
+
+function restartGame() { closeAllModals(); startGame(); }
+
+function backToMenu() {
+  game.running = false;
+  game.paused = false;
+  AudioMgr.stopMusic();
+  closeAllModals();
+  showScreen('screen-menu');
+  refreshHighScore();
+  if (confettiRAF) { cancelAnimationFrame(confettiRAF); confettiRAF = null; }
+}
+
+function pauseGame() {
+  if (!game.running || game.paused) return;
+  game.paused = true;
+  AudioMgr.stopMusic();
+  $('pause-score').textContent = Math.floor(game.score);
+  $('pause-coins').textContent = game.coins;
+  $('pause-level').textContent = game.level;
+  openModal('modal-pause');
+}
+
+function resumeGame() {
+  if (!game.paused) return;
+  game.paused = false;
+  closeModal('modal-pause');
+  if (AudioMgr.musicOn) AudioMgr.startMusic(game.level);
+  game.lastFrame = performance.now();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- EVENT LISTENERS ---------- */
+
+// Menu
+$('btn-start').addEventListener('click', () => { AudioMgr.init(); AudioMgr.resume(); AudioMgr.click(); startGame(); });
+$('btn-howto').addEventListener('click', () => { AudioMgr.init(); AudioMgr.resume(); AudioMgr.click(); openModal('modal-howto'); });
+$('btn-settings').addEventListener('click', () => { AudioMgr.init(); AudioMgr.resume(); AudioMgr.click(); openModal('modal-settings'); });
+$('btn-music').addEventListener('click', () => {
+  AudioMgr.init(); AudioMgr.resume();
+  AudioMgr.musicOn = !AudioMgr.musicOn;
+  Storage.setMusic(AudioMgr.musicOn);
+  updateMusicUI();
+  AudioMgr.click();
+  if (AudioMgr.musicOn && game.running && !game.paused) AudioMgr.startMusic(game.level);
+  else AudioMgr.stopMusic();
+});
+
+// Modal close
+$('btn-howto-close').addEventListener('click', () => { AudioMgr.click(); closeModal('modal-howto'); });
+$('btn-settings-close').addEventListener('click', () => { AudioMgr.click(); closeModal('modal-settings'); });
+
+// Toggles
+$('btn-toggle-music').addEventListener('click', () => {
+  AudioMgr.init(); AudioMgr.resume();
+  AudioMgr.musicOn = !AudioMgr.musicOn;
+  Storage.setMusic(AudioMgr.musicOn);
+  updateMusicUI();
+  AudioMgr.click();
+  if (AudioMgr.musicOn && game.running && !game.paused) AudioMgr.startMusic(game.level);
+  else AudioMgr.stopMusic();
+});
+$('btn-toggle-sfx').addEventListener('click', () => {
+  AudioMgr.init(); AudioMgr.resume();
+  AudioMgr.sfxOn = !AudioMgr.sfxOn;
+  Storage.setSfx(AudioMgr.sfxOn);
+  updateSfxUI();
+  if (AudioMgr.sfxOn) AudioMgr.click();
+});
+$('volume-slider').addEventListener('input', (e) => {
+  const v = parseInt(e.target.value, 10) / 100;
+  AudioMgr.setVolume(v);
+  Storage.setVolume(v);
+});
+
+// Reset high score
+$('btn-reset-score').addEventListener('click', () => {
+  AudioMgr.click();
+  closeModal('modal-settings');
+  openModal('modal-confirm');
+});
+$('btn-confirm-yes').addEventListener('click', () => {
+  AudioMgr.click();
+  Storage.resetHigh();
+  refreshHighScore();
+  closeModal('modal-confirm');
+});
+$('btn-confirm-no').addEventListener('click', () => {
+  AudioMgr.click();
+  closeModal('modal-confirm');
+});
+
+// Pause
+$('btn-pause').addEventListener('click', () => { AudioMgr.click(); pauseGame(); });
+$('btn-resume').addEventListener('click', () => { AudioMgr.click(); resumeGame(); });
+$('btn-pause-menu').addEventListener('click', () => { AudioMgr.click(); backToMenu(); });
+
+// Level complete
+$('btn-next-level').addEventListener('click', () => { AudioMgr.click(); nextLevel(); });
+
+// Win
+$('btn-win-again').addEventListener('click', () => { AudioMgr.click(); restartGame(); });
+$('btn-win-menu').addEventListener('click', () => { AudioMgr.click(); backToMenu(); });
+
+// Game over
+$('btn-go-retry').addEventListener('click', () => { AudioMgr.click(); restartGame(); });
+$('btn-go-menu').addEventListener('click', () => { AudioMgr.click(); backToMenu(); });
+
+/* ---------- CONTROLS ---------- */
+function bindControl(btnId, dir) {
+  const el = $(btnId);
+  const press = (e) => {
+    e.preventDefault();
+    el.classList.add('pressed');
+    doStep(dir);
+  };
+  const release = (e) => { el.classList.remove('pressed'); };
+
+  el.addEventListener('touchstart', press, { passive: false });
+  el.addEventListener('touchend', release);
+  el.addEventListener('touchcancel', release);
+  el.addEventListener('mousedown', press);
+  el.addEventListener('mouseup', release);
+  el.addEventListener('mouseleave', release);
+  // prevent double firing on mobile
+  el.addEventListener('click', (e) => e.preventDefault());
+}
+bindControl('btn-left', 'left');
+bindControl('btn-right', 'right');
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.repeat) return;
+  const k = e.key;
+  if (k === 'a' || k === 'A' || k === 'ArrowLeft') {
+    e.preventDefault();
+    doStep('left');
+  } else if (k === 'd' || k === 'D' || k === 'ArrowRight') {
+    e.preventDefault();
+    doStep('right');
+  } else if (k === 'Escape') {
+    if (game.running && !game.paused) pauseGame();
+  }
+});
+
+/* ---------- INIT ---------- */
+function initGame() {
+  AudioMgr.musicOn = Storage.getMusic();
+  AudioMgr.sfxOn = Storage.getSfx();
+  AudioMgr.volume = Storage.getVolume();
+
+  refreshHighScore();
+  updateMusicUI();
+  updateSfxUI();
+  $('volume-slider').value = Math.round(AudioMgr.volume * 100);
+
+  setTimeout(resizeCanvas, 100);
+}
+
+initGame();
+
+})();
+</script>
+</body>
+</html>
